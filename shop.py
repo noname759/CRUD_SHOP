@@ -19,7 +19,7 @@ def get_products_by_category(category):
     if response.status_code == 200:
         products = response.json()
         for product in products:
-            print(f"ID: {product['id']}, Название: {product['title']}, Цена: ₽{product['price']}")
+            print(f"{product['id']}. Название: {product['title']}, Цена: ₽{product['price']}")
     else:
         print("Не удалось получить продукты.")
 
@@ -29,7 +29,7 @@ def get_all_products():
     if response.status_code == 200:
         products = response.json()
         for product in products:
-            print(f"ID: {product['id']}, Название: {product['title']}, Цена: ₽{product['price']}")
+            print(f"{product['id']}. Название: {product['title']}, Цена: ₽{product['price']}")
     else:
         print("Не удалось получить все товары.")
 
@@ -43,7 +43,7 @@ def get_cart():
             response = requests.get(url)
             if response.status_code == 200:
                 product = response.json()
-                print(f"ID: {product['id']}, Название: {product['title']}, Цена: ₽{product['price']}")
+                print(f"{product['id']}. Название: {product['title']}, Цена: ₽{product['price']}")
             else:
                 print(f"Не удалось получить продукт с ID {product_id}.")
 
@@ -63,14 +63,28 @@ def main():
             category = input("Введите категорию (electronics, jewelery, men's clothing, women's clothing): ").strip().lower()
             if category in ['electronics', 'jewelery', "men's clothing", "women's clothing"]:
                 get_products_by_category(category)
+                print('--------------------')
+                print('--------------------')
+                print('--------------------')
             else:
                 print("Неверная категория. Попробуйте снова.")
         elif choice == '2':
             get_all_products()
+            print('--------------------')
+            print('--------------------')
+            print('--------------------')
+
         elif choice == '3':
             get_cart()
+            print('--------------------')
+            print('--------------------')
+            print('--------------------')
+
         elif choice == '4':
             print("Выход из программы.")
+            print('--------------------')
+            print('--------------------')
+            print('--------------------')
             break
         else:
             print("Неверный выбор. Попробуйте снова.")
