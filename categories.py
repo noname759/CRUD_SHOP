@@ -1,18 +1,23 @@
 import requests
-from pprint import pprint
+
+API_URL = 'https://fakestoreapi.com'
 
 def get_all_categories():
-    response = requests.get('https://fakestoreapi.com/products/categories')
+    url = f'{API_URL}/categories'
+    response = requests.get(url)
     if response.status_code == 200:
         categories = response.json()
         return categories
-    
-def get_products_of_categorie(categorie_name):
-    response = requests.get(f'https://fakestoreapi.com/products/category/{categorie_name}')
-    if response.status_code == 200:
-        categorie = response.json()
-        return categorie
+    else:
+        print("Не удалось получить список всех категорий.")
+        return []
 
-input_list = input('Гуруҳро муайян кунед: ')
-categories = get_products_of_categorie(input_list)
-pprint(categories)
+def get_products_of_category(category_name):
+    url = f'{API_URL}/products/category/{category_name}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        products = response.json()
+        return products
+    else:
+        print(f"Не удалось получить продукты для категории {category_name}.")
+        return []
