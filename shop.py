@@ -1,72 +1,59 @@
 import requests
+import categories
+import products_api
+import cart
 
-API_URL = 'https://fakestoreapi.com'
-cart = []
+def horizontall():
+    print('------------------------')
+    print('------------------------')
+    print('------------------------')
 
-def print_main_menu():
-    print("\nДобро пожаловать в наш магазин!")
-    print("1. Продукты по категории")
-    print("2. Все продукты")
-    print("3. Корзина")
-    print("4. Выход")
+while True: 
+    horizontall()
+    print('Добро пожаловать в наш магазин.')
+    print('Наши категории: electronics | jewelery | men\'s clothing | women\'s clothing | ')
+    print('###########################################')
 
-def get_products_by_category(category):
-    url = f'{API_URL}/products/category/{category}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        products = response.json()
-        for product in products:
-            print(f"ID: {product['id']}, Название: {product['title']}, Цена: ₽{product['price']}")
-    else:
-        print("Ошибка при получении продуктов.")
-
-def get_all_products():
-    url = f'{API_URL}/products'
-    response = requests.get(url)
-    if response.status_code == 200:
-        products = response.json()
-        for product in products:
-            print(f"ID: {product['id']}, Название: {product['title']}, Цена: ₽{product['price']}")
-    else:
-        print("Ошибка при получении продуктов.")
-
-def get_cart():
-    if not cart:
-        print("Корзина пуста.")
-    else:
-        for product_id in cart:
-            url = f'{API_URL}/products/{product_id}'
-            response = requests.get(url)
-            if response.status_code == 200:
-                product = response.json()
-                print(f"ID: {product['id']}, Название: {product['title']}, Цена: ₽{product['price']}")
-            else:
-                print(f"Ошибка при получении товара с ID {product_id}.")
-
-def add_to_cart(product_id):
-    if product_id not in cart:
-        cart.append(product_id)
-        print(f"Товар с ID {product_id} добавлен в корзину.")
-    else:
-        print(f"Товар с ID {product_id} уже в корзине.")
-
-def main():
-    while True:
-        print_main_menu()
-        choice = input("Выберите действие: ")
-
-        if choice == '1':
-            category = input("Введите категорию: ").strip().lower()
-            get_products_by_category(category)
-        elif choice == '2':
-            get_all_products()
-        elif choice == '3':
-            get_cart()
-        elif choice == '4':
-            print("Выход из программы.")
-            break
+    print('Выберите действия: ')
+    print('1. Получить продукты выбранной категории.')
+    print('2. Получить список всех товаров.')
+    print('3. Получить список всех корзин.')
+    print('4. Выход.')
+    
+    choose = input('Введите номер действия: ')
+    
+    if choose == '1':
+        category = input('Введите категорию: ')
+        products = categories.get_products_of_category(category)
+        
+        if products:
+            for product in products:
+                print(f'{product["id"]}. {product["title"]}. Цена: {product["price"]} $')
         else:
-            print("Неверный выбор. Попробуйте снова.")
-            
-if __name__ == '__main__':
-    main()
+            print('Не удалось получить продукты для указанной категории или категория не существует.')
+
+    elif choose == '2':
+        products = products_api.get_all_products()
+        
+        if products:
+            for product in products:
+                print(f'{product["id"]}. {product["title"]}. Цена: {product["price"]} $')
+        else:
+            print('Не удалось получить список всех товаров.')
+
+    elif choose == '3':
+        carts = cart.get_all_cart()
+        
+        if carts:
+            print('Список всех корзин:')
+            for cart in carts:
+                print(cart)
+        else:
+            print('Не удалось получить список всех корзин.')
+
+    elif choose == '4':
+        print('Выход из программы.')
+        break
+
+    else:
+        print('Неверный выбор, пожалуйста, выберите снова.')
